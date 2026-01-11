@@ -1,70 +1,50 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
+import { FaShoppingCart } from "react-icons/fa";
+import UseCart from "../../../Hooks/UseCart";
 
 const NavBar = () => {
     const { user, logOut } = useContext(AuthContext);
+    const [cart] = UseCart();
 
     const handleLogOut = () => {
-        logOut()
-            .then(() => { })
-            .catch(error => console.log(error));
+        logOut().catch(err => console.log(err));
     };
 
     return (
-        <div className="navbar fixed z-10 bg-black bg-opacity-30 text-white shadow-sm px-4">
+        <div className="navbar fixed z-10 bg-black bg-opacity-40 text-white px-4">
+
             <div className="navbar-start">
-                <div className="dropdown">
-                    <label tabIndex={0} className="btn btn-ghost lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
-                        </svg>
-                    </label>
-                    <ul
-                        tabIndex={0}
-                        className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-                    >
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/menu">Our Menu</Link></li>
-                        <li><Link to="/order">Order Food</Link></li>
-                        {!user && <li><Link to="/login">Log In</Link></li>}
-                        {!user && <li><Link to="/signup">Sign Up</Link></li>}
-                        {user && (
-                            <li>
-                                <button onClick={handleLogOut} className="w-full text-left">
-                                    Sign Out
-                                </button>
-                            </li>
-                        )}
-                        <li><Link to="/secret">Secret</Link></li>
-                    </ul>
-                </div>
-                <Link to="/" className="btn btn-ghost text-2xl">Bistro Boss</Link>
+                <Link to="/" className="btn btn-ghost text-xl">Bistro Boss</Link>
             </div>
 
             <div className="navbar-center hidden lg:flex">
-                <ul className="menu menu-horizontal px-1 gap-2">
+                <ul className="menu menu-horizontal gap-4">
                     <li><Link to="/">Home</Link></li>
-                    <li><Link to="/menu">Our Menu</Link></li>
-                    <li><Link to="/order">Order Food</Link></li>
-                    {!user && <li><Link to="/login">Log In</Link></li>}
-                    {!user && <li><Link to="/signup">Sign Up</Link></li>}
-                    {user && (
-                        <li>
-                            <button onClick={handleLogOut} className="bg-red-600 px-4 py-2 rounded text-white hover:bg-red-700">
-                                Sign Out
-                            </button>
-                        </li>
-                    )}
-                    <li><Link to="/secret">Secret</Link></li>
+                    <li><Link to="/menu">Menu</Link></li>
+                    <li><Link to="/order">Order</Link></li>
                 </ul>
             </div>
 
-            <div className="navbar-end hidden lg:flex">
-                {user && (
-                    <span className="mr-4 font-semibold">
-                        Hello, {user.displayName ? user.displayName : user.email}
+            <div className="navbar-end flex items-center gap-4">
+                <Link to="dashboard/cart" className="relative">
+                    <FaShoppingCart className="text-2xl" />
+                    <span className="absolute -top-2 -right-2 bg-red-600 text-xs px-2 rounded-full">
+                        {cart.length}
                     </span>
+                </Link>
+
+                {user && (
+                    <span className="text-sm">{user.displayName || user.email}</span>
+                )}
+
+                {user ? (
+                    <button onClick={handleLogOut} className="bg-red-600 px-3 py-1 rounded">
+                        Logout
+                    </button>
+                ) : (
+                    <Link to="/login" className="btn btn-sm">Login</Link>
                 )}
             </div>
         </div>
