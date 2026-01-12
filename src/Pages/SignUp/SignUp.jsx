@@ -5,8 +5,11 @@ import { useContext } from 'react';
 import { AuthContext } from '../../Providers/AuthProvider';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import useAxiosPublic from '../../Hooks/useAxiosPublic';
+import SocialLogIn from '../../Components/SocialLogIn/SocialLogIn';
 
 const SignUp = () => {
+    const axiosPublic = useAxiosPublic()
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { createUser, updateUserProfile } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -19,15 +22,25 @@ const SignUp = () => {
 
                 updateUserProfile(data.name, data.photoUrl)
                     .then(() => {
-                        console.log('User profile updated');
+                        const userInfo = {
+                            name: data.name,
+                            email: data.email
+                        }
+                        axiosPublic.post('/user', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('user added in data base')
 
-                        // Success popup
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Account Created!',
-                            text: `Welcome, ${data.name}`,
-                        });
-                        navigate('/')
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Account Created!',
+                                        text: `Welcome, ${data.name}`,
+                                    });
+                                    navigate('/')
+                                }
+                            })
+
+
                     })
                     .catch(error => {
                         console.log(error);
@@ -108,7 +121,9 @@ const SignUp = () => {
                                 type="submit"
                                 value="Sign Up"
                             />
+
                         </form>
+                        <SocialLogIn></SocialLogIn>
                     </div>
                 </div>
             </div>

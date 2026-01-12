@@ -25,10 +25,10 @@ const Menu = () => {
                 <title>Bistro | Menu</title>
             </Helmet>
 
-            {/* Main Banner */}
+
             <Cover img={menuImg} title="OUR MENU" />
 
-            {/* Today's Offer */}
+
             <SectionTitle
                 subHeading="Don't Miss"
                 heading="Today's Offer"
@@ -36,7 +36,7 @@ const Menu = () => {
 
             <MenuCategory items={offered} />
 
-            {/* Category Sections */}
+
             <MenuCategory items={dessert} title={"dessert"} img={dessertImg} />
             <MenuCategory items={soup} title={"soup"} img={soupImg} />
             <MenuCategory items={salad} title={"salad"} img={saladImg} />
