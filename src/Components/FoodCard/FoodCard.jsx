@@ -50,7 +50,7 @@ const FoodCard = ({ item }) => {
                 <div className="card-actions justify-end">
                     <button
                         onClick={handleAddToCart}
-                        className="bg-black text-white px-6 py-3 rounded-lg"
+                        className="bg-orange-500 text-white px-6 py-3 rounded-lg"
                     >
                         Add To Cart
                     </button>

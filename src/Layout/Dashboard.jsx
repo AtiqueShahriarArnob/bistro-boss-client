@@ -107,11 +107,11 @@ const Dashboard = () => {
 
                                 <li>
                                     <NavLink
-                                        to="/dashboard/bookings"
+                                        to="/dashboard/paymentHistory"
                                         className="flex items-center gap-3"
                                     >
                                         <FaList />
-                                        <span>Bookings</span>
+                                        <span>Payment Real History</span>
                                     </NavLink>
                                 </li>
                             </>

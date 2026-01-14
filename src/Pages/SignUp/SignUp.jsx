@@ -117,7 +117,7 @@ const SignUp = () => {
                             />
 
                             <input
-                                className="bg-black text-white p-4 rounded-xl mt-6 w-full"
+                                className="bg-orange-500 p-3 text-white rounded-xl w-full mt-6"
                                 type="submit"
                                 value="Sign Up"
                             />

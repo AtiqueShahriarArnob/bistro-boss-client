@@ -129,7 +129,7 @@ const LogIn = () => {
 
                                 <input
                                     disabled={disable}
-                                    className="bg-black text-white p-4 rounded-xl mt-6 w-full disabled:opacity-50"
+                                    className="bg-orange-500 text-white p-4 rounded-xl mt-6 w-full disabled:opacity-50"
                                     type="submit"
                                     value="Login"
                                 />

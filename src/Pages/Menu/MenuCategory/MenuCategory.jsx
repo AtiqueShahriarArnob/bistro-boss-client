@@ -18,7 +18,7 @@ const MenuCategory = ({ items, title, img }) => {
                 {title && (
                     <div className="text-center mt-10">
                         <Link to={`/order/${title.toLowerCase()}`}>
-                            <button className="bg-black text-white px-6 py-3 rounded-lg">
+                            <button className="bg-orange-500 text-white px-6 py-3 rounded-lg">
                                 Order Now
                             </button>
                         </Link>
