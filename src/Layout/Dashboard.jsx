@@ -47,15 +47,6 @@ const Dashboard = () => {
 
                                 <li>
                                     <NavLink
-                                        to="/dashboard/bookings"
-                                        className="flex items-center gap-3"
-                                    >
-                                        <FaList />
-                                        <span>Manage Bookings</span>
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink
                                         to="/dashboard/users"
                                         className="flex items-center gap-3"
                                     >
@@ -95,15 +86,7 @@ const Dashboard = () => {
                                     </NavLink>
                                 </li>
 
-                                <li>
-                                    <NavLink
-                                        to="/dashboard/review"
-                                        className="flex items-center gap-3"
-                                    >
-                                        <FaAd />
-                                        <span>Review</span>
-                                    </NavLink>
-                                </li>
+
 
                                 <li>
                                     <NavLink
@@ -142,7 +125,7 @@ const Dashboard = () => {
                     </li>
                     <li>
                         <NavLink
-                            to="/order/contact"
+                            to="/contactUs"
                             className="flex items-center gap-3"
                         >
                             <FaEnvelope></FaEnvelope>

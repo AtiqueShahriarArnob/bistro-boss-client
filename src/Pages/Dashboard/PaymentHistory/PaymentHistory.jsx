@@ -6,28 +6,25 @@ const PaymentHistory = () => {
     const { user } = UseAuth();
     const axiosSecure = useAxiosSecure();
 
-    const { data: payments = [], isLoading, error } = useQuery({
+    const { data: payments = [], isLoading } = useQuery({
+        // The query will now refetch automatically as soon as user.email exists
         queryKey: ['payments', user?.email],
         queryFn: async () => {
-            // Only fetch if user email exists
-            if (!user?.email) return [];
-
-            // Fixed: Changed /payment/ to /payments/ to match your backend
-            const res = await axiosSecure.get(`/payments/${user.email}`);
+            // FIX: We wait for the email. If it's not there, axiosSecure won't even fire.
+            const res = await axiosSecure.get(`/payments/${user?.email}`);
             return res.data;
-        }
+        },
+        // This ensures the API isn't called with "undefined"
+        enabled: !!user?.email
     });
 
     if (isLoading) return <div className="p-10 text-center">Loading payments...</div>;
-
-    if (error) return <div className="p-10 text-red-500 text-center">Error loading payments</div>;
 
     return (
         <div className="p-8">
             <h2 className="text-3xl mb-4">Total Payments: {payments.length}</h2>
             <div className="overflow-x-auto shadow-lg rounded-lg">
                 <table className="table table-zebra w-full">
-                    {/* head */}
                     <thead className="bg-orange-400 text-white">
                         <tr>
                             <th>#</th>
@@ -55,7 +52,7 @@ const PaymentHistory = () => {
                 </table>
             </div>
             {payments.length === 0 && (
-                <p className="text-center mt-10 text-gray-500">No payment history found.</p>
+                <p className="text-center mt-10 text-gray-500">No payment history found for {user?.email}</p>
             )}
         </div>
     );

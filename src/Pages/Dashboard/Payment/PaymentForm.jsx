@@ -11,9 +11,9 @@ const PaymentForm = () => {
     const elements = useElements();
     const axiosSecure = useAxiosSecure();
     const { user } = UseAuth();
-    const [cart,] = UseCart();
+    const [cart, refetch] = UseCart(); // Added refetch to clear cart UI later
     const [transactionId, setTransactionId] = useState();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [error, setError] = useState('');
     const [clientSecret, setClientSecret] = useState('');
 
@@ -36,7 +36,6 @@ const PaymentForm = () => {
         const card = elements.getElement(CardElement);
         if (!card) return;
 
-
         const { error: methodError } = await stripe.createPaymentMethod({
             type: 'card',
             card,
@@ -47,7 +46,6 @@ const PaymentForm = () => {
             return;
         }
 
-        // confirm payment
         const { paymentIntent, error: confirmError } =
             await stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
@@ -62,33 +60,33 @@ const PaymentForm = () => {
         if (confirmError) {
             setError(confirmError.message);
         } else {
-            console.log('Payment success:', paymentIntent);
             if (paymentIntent.status === 'succeeded') {
-                console.log('transaction id', paymentIntent.id)
-                setTransactionId(paymentIntent.id)
-                //save the payment 
+                setTransactionId(paymentIntent.id);
+
                 const payment = {
                     email: user.email,
                     price: totalPrice,
                     transactionId: paymentIntent.id,
-                    date: new Date(),
+                    date: new Date(), // UTC date
                     cartId: cart.map(item => item._id),
                     menuItemId: cart.map(item => item.menuId),
                     status: 'pending'
-                }
-                const res = await axiosSecure.post('/payments', payment);
-                console.log('payment save', res.data);
+                };
+
+                // FIX: Changed '/payments' to '/payment' to match your Backend Route
+                const res = await axiosSecure.post('/payment', payment);
+
                 if (res.data?.paymentResult?.insertedId) {
+                    refetch(); // Clear the cart icon/count
                     Swal.fire({
                         position: 'top-end',
                         icon: 'success',
-                        title: "thank you sir for taka poisha",
+                        title: "Payment Successful!",
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    navigate('/dashboard/paymentHistory')
+                    navigate('/dashboard/paymentHistory');
                 }
-
             }
             setError('');
         }
@@ -111,7 +109,7 @@ const PaymentForm = () => {
             />
 
             <button
-                className="bg-orange-500 p-3 text-white rounded-xl mt-4"
+                className="bg-orange-500 p-3 text-white rounded-xl mt-4 w-full disabled:bg-gray-400"
                 type="submit"
                 disabled={!stripe || !clientSecret}
             >
@@ -120,7 +118,7 @@ const PaymentForm = () => {
 
             {error && <p className="text-red-600 mt-2">{error}</p>}
             {transactionId && (
-                <p className="text-green-600">
+                <p className="text-green-600 mt-2">
                     Your Transaction Id: <strong>{transactionId}</strong>
                 </p>
             )}

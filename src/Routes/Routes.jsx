@@ -16,6 +16,10 @@ import ManageItems from "../Pages/Dashboard/ManageItems/ManageItems";
 import UpdateItem from "../Pages/Dashboard/UpdateItem/UpdateItem";
 import Payment from "../Pages/Dashboard/Payment/Payment";
 import PaymentHistory from "../Pages/Dashboard/PaymentHistory/PaymentHistory";
+import UserHome from "../Pages/Dashboard/UserHome/UserHome";
+import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome";
+import ContactUs from "../Pages/ContactUs/ContactUs";
+import UserReservation from "../Pages/Dashboard/UserReservation/UserReservation";
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +37,10 @@ export const router = createBrowserRouter([
             {
                 path: "order",
                 element: <Order />
+            },
+            {
+                path: "contactUs",
+                element: <ContactUs></ContactUs>
             },
             {
                 path: "order/:category",
@@ -61,6 +69,11 @@ export const router = createBrowserRouter([
         path: 'dashboard',
         element: <PrivateRoute> <Dashboard></Dashboard></PrivateRoute>,
         children: [
+            //user routes
+            {
+                path: 'userHome',
+                element: <UserHome></UserHome>
+            },
             {
                 path: 'cart',
                 element: <Cart></Cart>,
@@ -70,12 +83,21 @@ export const router = createBrowserRouter([
                 element: <Payment></Payment>,
             },
             {
+                path: "reservation",
+                element: <UserReservation></UserReservation>
+            },
+            {
                 path: 'paymentHistory',
                 element: <PaymentHistory></PaymentHistory>,
             },
 
 
             //admin routes
+            {
+                path: 'adminHome',
+                element: <AdminRoutes><AdminHome></AdminHome></AdminRoutes>,
+            },
+
             {
                 path: 'users',
                 element: <AdminRoutes><AllUser></AllUser></AdminRoutes>,
